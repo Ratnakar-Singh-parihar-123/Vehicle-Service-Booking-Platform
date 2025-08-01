@@ -63,6 +63,11 @@ export const authService = {
     return apiMethods.post('/auth/reset-password', { token, password: newPassword });
   },
 
+  // Validate reset token
+  validateResetToken: (token, email) => {
+    return apiMethods.post('/auth/validate-reset-token', { token, email });
+  },
+
   // Verify email
   verifyEmail: (token) => {
     return apiMethods.post('/auth/verify-email', { token });

@@ -16,6 +16,13 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || '/dashboard';
 
+  // Show success message if redirected from password reset
+  React.useEffect(() => {
+    if (location.state?.message) {
+      toast.success(location.state.message);
+    }
+  }, [location.state]);
+
   const {
     register,
     handleSubmit,

@@ -26,6 +26,8 @@ import HelpCenter from './pages/HelpCenter';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AboutMeDemo from './pages/AboutMeDemo';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 // Auth components
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -78,10 +80,12 @@ function App() {
               path="/login" 
               element={user ? <Navigate to="/dashboard" replace /> : <Login />} 
             />
-            <Route 
-              path="/register" 
-              element={user ? <Navigate to="/dashboard" replace /> : <Register />} 
+            <Route
+              path="/register"
+              element={user ? <Navigate to="/dashboard" replace /> : <Register />}
             />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Protected routes */}
             <Route 

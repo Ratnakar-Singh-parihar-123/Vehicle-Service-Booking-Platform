@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { 
-  FiPhone, 
-  FiMail, 
-  FiMapPin, 
+import {
+  FiPhone,
+  FiMail,
+  FiMapPin,
   FiClock,
   FiSend,
   FiUser,
   FiMessageSquare,
-  FiCheckCircle,
-  FiAlertCircle,
   FiHeadphones,
   FiHelpCircle,
   FiTool
@@ -272,7 +270,7 @@ const Contact = () => {
                       <input
                         {...register('phone', {
                           pattern: {
-                            value: /^[\+]?[1-9][\d]{0,15}$/,
+                            value: /^[+]?[1-9][\d]{0,15}$/,
                             message: 'Invalid phone number'
                           }
                         })}

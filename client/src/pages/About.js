@@ -6,7 +6,6 @@ import {
   FiClock,
   FiUsers,
   FiTool,
-  FiStar,
   FiMapPin,
   FiPhone,
   FiMail,
