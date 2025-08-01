@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#2563eb"/>
+  
+  <!-- Vehicle icon -->
+  <g fill="white">
+    <!-- Car body -->
+    <rect x="128" y="220" width="256" height="72" rx="16"/>
+    
+    <!-- Car windows -->
+    <rect x="144" y="200" width="224" height="40" rx="16" fill="#2563eb"/>
+    
+    <!-- Wheels -->
+    <circle cx="192" cy="320" r="32" fill="white"/>
+    <circle cx="320" cy="320" r="32" fill="white"/>
+    <circle cx="192" cy="320" r="16" fill="#2563eb"/>
+    <circle cx="320" cy="320" r="16" fill="#2563eb"/>
+    
+    <!-- Service wrench -->
+    <g transform="translate(380, 140)">
+      <rect x="0" y="0" width="12" height="60" rx="6" fill="white"/>
+      <rect x="-6" y="48" width="24" height="12" rx="6" fill="white"/>
+    </g>
+    
+    <!-- Service gear -->
+    <g transform="translate(120, 140)">
+      <circle cx="0" cy="0" r="24" fill="white"/>
+      <circle cx="0" cy="0" r="12" fill="#2563eb"/>
+      <!-- Gear teeth -->
+      <rect x="-2" y="-30" width="4" height="12" fill="white"/>
+      <rect x="-2" y="18" width="4" height="12" fill="white"/>
+      <rect x="-30" y="-2" width="12" height="4" fill="white"/>
+      <rect x="18" y="-2" width="12" height="4" fill="white"/>
+    </g>
+    
+    <!-- Service text -->
+    <text x="256" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white">Vehicle Service</text>
+  </g>
+</svg>

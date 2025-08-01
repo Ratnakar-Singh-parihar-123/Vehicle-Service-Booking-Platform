@@ -1,0 +1,23 @@
+# Favicon Placeholder
+
+Since we can't create a binary .ico file through text, you have a few options:
+
+## Option 1: Use an online favicon generator
+1. Go to https://favicon.io/favicon-generator/
+2. Create a simple icon with "VS" text (Vehicle Service)
+3. Download the favicon.ico file
+4. Place it in client/public/favicon.ico
+
+## Option 2: Use the SVG favicon (modern browsers)
+The favicon.svg we created will work in modern browsers.
+The 404 error for favicon.ico will still appear in older browsers.
+
+## Option 3: Copy from another project
+If you have another React project, copy its favicon.ico file.
+
+## Option 4: Use a simple 16x16 PNG renamed to .ico
+Create a simple 16x16 pixel PNG image and rename it to favicon.ico.
+Most browsers will accept this.
+
+For now, the SVG favicon will work in modern browsers, and the 404 error
+for favicon.ico is not critical - it won't break your application.

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <!-- Background circle -->
+  <circle cx="96" cy="96" r="96" fill="#2563eb"/>
+  
+  <!-- Vehicle icon -->
+  <g fill="white">
+    <!-- Car body -->
+    <rect x="48" y="80" width="96" height="32" rx="8"/>
+    
+    <!-- Car windows -->
+    <rect x="56" y="72" width="80" height="16" rx="8" fill="#2563eb"/>
+    
+    <!-- Wheels -->
+    <circle cx="72" cy="120" r="12" fill="white"/>
+    <circle cx="120" cy="120" r="12" fill="white"/>
+    <circle cx="72" cy="120" r="6" fill="#2563eb"/>
+    <circle cx="120" cy="120" r="6" fill="#2563eb"/>
+    
+    <!-- Service wrench -->
+    <g transform="translate(140, 50)">
+      <rect x="0" y="0" width="4" height="20" rx="2" fill="white"/>
+      <rect x="-2" y="16" width="8" height="4" rx="2" fill="white"/>
+    </g>
+    
+    <!-- Service text -->
+    <text x="96" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">VS</text>
+  </g>
+</svg>
