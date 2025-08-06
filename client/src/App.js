@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import './styles/enhanced.css';
 
 // Layout components
 import Header from './components/common/Header';
@@ -28,6 +29,9 @@ import NotFound from './pages/NotFound';
 import AboutMeDemo from './pages/AboutMeDemo';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import VehicleManagement from './pages/VehicleManagement';
+import PaymentCenter from './pages/PaymentCenter';
+import LiveChatSupport from './components/chat/LiveChatSupport';
 
 // Auth components
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -132,6 +136,22 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/vehicles"
+              element={
+                <ProtectedRoute>
+                  <VehicleManagement />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payments"
+              element={
+                <ProtectedRoute>
+                  <PaymentCenter />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/about" element={<About />} />
             <Route path="/about-me-demo" element={<AboutMeDemo />} />
             <Route path="/contact" element={<Contact />} />
@@ -185,6 +205,9 @@ function App() {
         </main>
 
         <Footer />
+
+        {/* Live Chat Support */}
+        <LiveChatSupport />
       </div>
     </div>
   );

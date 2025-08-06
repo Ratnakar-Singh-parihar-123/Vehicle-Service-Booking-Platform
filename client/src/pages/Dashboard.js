@@ -22,6 +22,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
 import { dashboardService } from '../services/dashboardService';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import AnalyticsDashboard from '../components/analytics/AnalyticsDashboard';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -566,6 +567,18 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
+          {/* Analytics Section */}
+          {(user?.role === 'service_center' || user?.role === 'admin') && (
+            <div className="mt-8">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                  Business Analytics
+                </h2>
+                <AnalyticsDashboard />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

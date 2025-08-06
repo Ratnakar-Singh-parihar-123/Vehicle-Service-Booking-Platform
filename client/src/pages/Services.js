@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { 
-  FiTool, 
-  FiSettings, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FiTool,
+  FiSettings,
   FiZap,
   FiShield,
   FiTruck,
@@ -16,19 +17,61 @@ import {
   FiMapPin,
   FiPhone,
   FiFilter,
-  FiSearch
+  FiSearch,
+  FiHeart,
+  FiAward,
+  FiUsers,
+  FiThumbsUp,
+  FiTrendingUp,
+  FiX
 } from 'react-icons/fi';
+import { useAuth } from '../hooks/useAuth';
 
 const Services = () => {
+  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('popular');
+  const [showFilters, setShowFilters] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const serviceCategories = [
-    { id: 'all', name: 'All Services', icon: FiTool },
-    { id: 'maintenance', name: 'Maintenance', icon: FiSettings },
-    { id: 'repair', name: 'Repair', icon: FiTool },
-    { id: 'electrical', name: 'Electrical', icon: FiZap },
-    { id: 'emergency', name: 'Emergency', icon: FiShield }
+    {
+      id: 'all',
+      name: 'All Services',
+      icon: FiTool,
+      color: 'from-blue-500 to-cyan-500',
+      count: 12
+    },
+    {
+      id: 'maintenance',
+      name: 'Maintenance',
+      icon: FiSettings,
+      color: 'from-green-500 to-emerald-500',
+      count: 5
+    },
+    {
+      id: 'repair',
+      name: 'Repair',
+      icon: FiTool,
+      color: 'from-orange-500 to-red-500',
+      count: 4
+    },
+    {
+      id: 'electrical',
+      name: 'Electrical',
+      icon: FiZap,
+      color: 'from-yellow-500 to-orange-500',
+      count: 2
+    },
+    {
+      id: 'emergency',
+      name: 'Emergency',
+      icon: FiShield,
+      color: 'from-red-500 to-pink-500',
+      count: 1
+    }
   ];
 
   const services = [
@@ -42,7 +85,11 @@ const Services = () => {
       features: ['Premium oil options', 'Filter replacement', 'Fluid level check', 'Multi-point inspection'],
       icon: FiTool,
       popular: true,
-      rating: 4.9
+      rating: 4.9,
+      reviews: 1247,
+      image: '/api/placeholder/400/250',
+      warranty: '6 months',
+      bookings: 2341
     },
     {
       id: 2,
@@ -154,14 +201,60 @@ const Services = () => {
     }
   ];
 
-  const filteredServices = services.filter(service => {
-    const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
-    const matchesSearch = searchTerm === '' || 
-      service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      service.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    return matchesCategory && matchesSearch;
-  });
+  // Utility functions
+  const toggleFavorite = (serviceId) => {
+    setFavorites(prev =>
+      prev.includes(serviceId)
+        ? prev.filter(id => id !== serviceId)
+        : [...prev, serviceId]
+    );
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 300);
+  };
+
+  const clearFilters = () => {
+    setSelectedCategory('all');
+    setSearchTerm('');
+    setSortBy('popular');
+  };
+
+  // Enhanced filtering and sorting
+  const filteredServices = services
+    .filter(service => {
+      const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
+      const matchesSearch = searchTerm === '' ||
+        service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.features.some(feature => feature.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'price':
+          return parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''));
+        case 'rating':
+          return b.rating - a.rating;
+        case 'popular':
+          return (b.popular ? 1 : 0) - (a.popular ? 1 : 0) || b.rating - a.rating;
+        case 'name':
+          return a.name.localeCompare(b.name);
+        default:
+          return 0;
+      }
+    });
+
+  // Stats for display
+  const stats = [
+    { label: 'Total Services', value: services.length, icon: FiTool },
+    { label: 'Happy Customers', value: '15K+', icon: FiUsers },
+    { label: 'Average Rating', value: '4.8', icon: FiStar },
+    { label: 'Service Centers', value: '50+', icon: FiMapPin }
+  ];
 
   const features = [
     {
@@ -189,61 +282,139 @@ const Services = () => {
   return (
     <>
       <Helmet>
-        <title>Services - Vehicle Service Booking Platform</title>
-        <meta name="description" content="Comprehensive automotive services including maintenance, repair, electrical, and emergency services. Book your vehicle service today." />
+        <title>Premium Vehicle Services - Professional Car Care & Maintenance</title>
+        <meta name="description" content="Comprehensive automotive services including maintenance, repair, electrical, and emergency services. Professional technicians, quality guarantee, and competitive pricing." />
       </Helmet>
 
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Our Services
-              </h1>
-              <p className="text-xl md:text-2xl text-primary-100 max-w-3xl mx-auto mb-8">
-                Comprehensive automotive services to keep your vehicle running at its best
-              </p>
-              <Link
-                to="/book-service"
-                className="inline-flex items-center bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-              >
-                <FiCalendar className="w-5 h-5 mr-2" />
-                Book Service Now
-              </Link>
-            </div>
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* Enhanced Hero Section */}
+        <section className="relative bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white overflow-hidden">
+          {/* Background Elements */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
           </div>
-        </div>
 
-        {/* Features Section */}
-        <div className="py-16">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center"
+            >
+              <motion.h1
+                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.2 }}
+              >
+                Premium
+                <span className="block bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  Vehicle Services
+                </span>
+              </motion.h1>
+
+              <motion.p
+                className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.4 }}
+              >
+                Professional automotive services with certified technicians, quality guarantee,
+                and transparent pricing. Your vehicle deserves the best care.
+              </motion.p>
+
+              {/* Stats */}
+              <motion.div
+                className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.6 }}
+              >
+                {stats.map((stat, index) => {
+                  const Icon = stat.icon;
+                  return (
+                    <div key={index} className="text-center">
+                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <Icon className="w-6 h-6 text-cyan-400" />
+                      </div>
+                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-sm text-blue-200">{stat.label}</div>
+                    </div>
+                  );
+                })}
+              </motion.div>
+
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+              >
+                <Link
+                  to="/book-service"
+                  className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-2xl shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center"
+                >
+                  <span>Book Service Now</span>
+                  <FiArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 transition-all duration-300 inline-flex items-center justify-center"
+                >
+                  <FiPhone className="mr-2 w-5 h-5" />
+                  <span>Contact Us</span>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Enhanced Features Section */}
+        <section className="py-20 bg-gray-50 dark:bg-gray-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
                 Why Choose Our Services?
               </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
-                Professional automotive care you can trust
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                Experience professional automotive care with cutting-edge technology and uncompromising quality standards.
               </p>
-            </div>
-            
+            </motion.div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {features.map((feature, index) => (
-                <div key={index} className="text-center">
-                  <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <feature.icon className="w-8 h-8 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="group text-center bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600"
+                  >
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Services Section */}
         <div className="bg-white dark:bg-gray-800 py-16">

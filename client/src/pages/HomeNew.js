@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import {
-  FiCalendar,
-  FiClock,
-  FiMapPin,
-  FiShield,
-  FiUsers,
+import { 
+  FiCalendar, 
+  FiClock, 
+  FiMapPin, 
+  FiShield, 
+  FiUsers, 
   FiStar,
   FiArrowRight,
   FiCheckCircle,
@@ -23,7 +23,7 @@ import {
   FiPlay,
   FiChevronLeft,
   FiChevronRight,
-  FiMessageCircle,
+  FiQuote,
   FiPhone,
   FiMail
 } from 'react-icons/fi';
@@ -155,7 +155,7 @@ const Home = () => {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              <motion.h1
+              <motion.h1 
                 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -167,17 +167,17 @@ const Home = () => {
                 </span>
               </motion.h1>
 
-              <motion.p
+              <motion.p 
                 className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.4 }}
               >
-                Experience the future of vehicle maintenance with our AI-powered platform.
+                Experience the future of vehicle maintenance with our AI-powered platform. 
                 Professional service, transparent pricing, and unmatched convenience.
               </motion.p>
 
-              <motion.div
+              <motion.div 
                 className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -206,7 +206,7 @@ const Home = () => {
               </motion.div>
 
               {/* Trust Indicators */}
-              <motion.div
+              <motion.div 
                 className="flex flex-wrap justify-center items-center gap-8 pt-12 opacity-80"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.8 }}
@@ -229,7 +229,7 @@ const Home = () => {
           </div>
 
           {/* Scroll Indicator */}
-          <motion.div
+          <motion.div 
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -285,7 +285,7 @@ const Home = () => {
                 Why Choose Our Platform?
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                Experience the next generation of vehicle service with cutting-edge technology
+                Experience the next generation of vehicle service with cutting-edge technology 
                 and uncompromising quality standards.
               </p>
             </motion.div>
@@ -304,16 +304,16 @@ const Home = () => {
                   >
                     {/* Gradient Background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-
+                    
                     <div className="relative z-10">
                       <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                         <Icon className="w-8 h-8 text-white" />
                       </div>
-
+                      
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
                         {feature.title}
                       </h3>
-
+                      
                       <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                         {feature.description}
                       </p>
@@ -354,19 +354,19 @@ const Home = () => {
                   className="max-w-4xl mx-auto"
                 >
                   <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-8 lg:p-12 relative">
-                    <FiMessageCircle className="absolute top-6 left-6 w-8 h-8 text-blue-500/20" />
-
+                    <FiQuote className="absolute top-6 left-6 w-8 h-8 text-blue-500/20" />
+                    
                     <div className="text-center">
                       <div className="flex justify-center mb-6">
                         {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
                           <FiStar key={i} className="w-6 h-6 text-yellow-400 fill-current" />
                         ))}
                       </div>
-
+                      
                       <blockquote className="text-xl lg:text-2xl text-gray-900 dark:text-white font-medium mb-8 leading-relaxed">
                         "{testimonials[currentTestimonial].text}"
                       </blockquote>
-
+                      
                       <div className="flex items-center justify-center space-x-4">
                         <img
                           src={testimonials[currentTestimonial].image}
@@ -398,21 +398,21 @@ const Home = () => {
                 >
                   <FiChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </button>
-
+                
                 <div className="flex space-x-2">
                   {testimonials.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentTestimonial(index)}
                       className={`w-3 h-3 rounded-full transition-colors ${
-                        index === currentTestimonial
-                          ? 'bg-blue-500'
+                        index === currentTestimonial 
+                          ? 'bg-blue-500' 
                           : 'bg-gray-300 dark:bg-gray-600'
                       }`}
                     />
                   ))}
                 </div>
-
+                
                 <button
                   onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
                   className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -429,7 +429,7 @@ const Home = () => {
           <div className="absolute inset-0">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-900/80 to-purple-900/80" />
           </div>
-
+          
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -444,7 +444,7 @@ const Home = () => {
               <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
                 Join thousands of satisfied customers and give your vehicle the care it deserves.
               </p>
-
+              
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link
                   to={user ? "/book-service" : "/register"}
@@ -455,7 +455,7 @@ const Home = () => {
                     <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>
-
+                
                 <Link
                   to="/contact"
                   className="group px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 transition-all duration-300"
