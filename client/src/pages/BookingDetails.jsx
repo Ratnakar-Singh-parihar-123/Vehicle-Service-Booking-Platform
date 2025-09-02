@@ -34,26 +34,26 @@ const BookingDetails = () => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   // Fetch booking details
-  const fetchBookingDetails = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  // const fetchBookingDetails = async () => {
+  //   try {
+  //     setLoading(true);
+  //     setError(null);
 
-      const response = await bookingService.getBookingById(id);
+  //     const response = await bookingService.getBookingById(id);
 
-      if (response.data.success) {
-        setBooking(response.data.data);
-      } else {
-        throw new Error(response.data.message || 'Failed to fetch booking details');
-      }
-    } catch (error) {
-      console.error('Fetch booking details error:', error);
-      setError('Failed to load booking details');
-      toast.error('Failed to load booking details');
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (response.data.success) {
+  //       setBooking(response.data.data);
+  //     } else {
+  //       throw new Error(response.data.message || 'Failed to fetch booking details');
+  //     }
+  //   } catch (error) {
+  //     console.error('Fetch booking details error:', error);
+  //     setError('Failed to load booking details');
+  //     toast.error('Failed to load booking details');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Get status color and icon
   const getStatusInfo = (status) => {
@@ -428,11 +428,30 @@ For questions or support, contact us at support@vehicleservice.com
   };
 
   // Load booking details on component mount
-  useEffect(() => {
-    if (id) {
-      fetchBookingDetails();
+ useEffect(() => {
+  const fetchBookingDetails = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await bookingService.getBookingById(id);
+      if (response.data.success) {
+        setBooking(response.data.data);
+      } else {
+        throw new Error(response.data.message || 'Failed to fetch booking details');
+      }
+    } catch (error) {
+      console.error('Fetch booking details error:', error);
+      setError('Failed to load booking details');
+      toast.error('Failed to load booking details');
+    } finally {
+      setLoading(false);
     }
-  }, [id]);
+  };
+
+  if (id) {
+    fetchBookingDetails();
+  }
+}, [id]);
 
   if (loading) {
     return (

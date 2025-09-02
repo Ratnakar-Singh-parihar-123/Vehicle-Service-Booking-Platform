@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FiPlus, 
-  FiEdit3, 
-  FiTrash2, 
+import {
+  FiPlus,
+  FiEdit3,
+  FiTrash2,
   FiTruck,
-  FiCalendar, 
+  // FiCalendar, 
   FiTool,
   FiAlertTriangle,
   FiCheckCircle,
   FiClock,
   FiMapPin,
   FiFileText,
-  FiCamera,
+  // FiCamera,
   FiUpload,
   FiX,
   FiSave
@@ -112,8 +112,8 @@ const VehicleManagement = () => {
     try {
       if (showEditModal && selectedVehicle) {
         // Update existing vehicle
-        setVehicles(prev => prev.map(v => 
-          v.id === selectedVehicle.id 
+        setVehicles(prev => prev.map(v =>
+          v.id === selectedVehicle.id
             ? { ...v, ...data, id: selectedVehicle.id }
             : v
         ));
@@ -164,7 +164,13 @@ const VehicleManagement = () => {
   };
 
   const getServiceStatus = (vehicle) => {
-    const daysSinceLastService = Math.floor((Date.now() - vehicle.lastService) / (1000 * 60 * 60 * 24));
+    const daysSinceLastService =
+      Math.floor((Date.now() - vehicle.lastService) / 86_400_000);
+
+    <span className="text-sm text-gray-500">
+      {daysSinceLastService} days since last service
+    </span>
+
     const daysUntilNextService = Math.floor((vehicle.nextService - Date.now()) / (1000 * 60 * 60 * 24));
 
     if (daysUntilNextService < 0) {
@@ -229,11 +235,10 @@ const VehicleManagement = () => {
                       <motion.div
                         key={vehicle.id}
                         whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.05)' }}
-                        className={`p-4 cursor-pointer transition-colors ${
-                          selectedVehicle?.id === vehicle.id 
-                            ? 'bg-primary-50 dark:bg-primary-900/20 border-r-4 border-primary-600' 
+                        className={`p-4 cursor-pointer transition-colors ${selectedVehicle?.id === vehicle.id
+                            ? 'bg-primary-50 dark:bg-primary-900/20 border-r-4 border-primary-600'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
-                        }`}
+                          }`}
                         onClick={() => setSelectedVehicle(vehicle)}
                       >
                         <div className="flex items-center space-x-3">
@@ -251,8 +256,8 @@ const VehicleManagement = () => {
                               {serviceStatus.status === 'overdue' && <FiAlertTriangle className="w-3 h-3 mr-1" />}
                               {serviceStatus.status === 'due-soon' && <FiClock className="w-3 h-3 mr-1" />}
                               {serviceStatus.status === 'up-to-date' && <FiCheckCircle className="w-3 h-3 mr-1" />}
-                              {serviceStatus.status === 'overdue' ? 'Service Overdue' : 
-                               serviceStatus.status === 'due-soon' ? 'Service Due Soon' : 'Up to Date'}
+                              {serviceStatus.status === 'overdue' ? 'Service Overdue' :
+                                serviceStatus.status === 'due-soon' ? 'Service Due Soon' : 'Up to Date'}
                             </div>
                           </div>
                           <div className="flex items-center space-x-1">
@@ -313,11 +318,10 @@ const VehicleManagement = () => {
                           <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
-                              activeTab === tab.id
+                            className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${activeTab === tab.id
                                 ? 'border-primary-500 text-primary-600 dark:text-primary-400'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-                            }`}
+                              }`}
                           >
                             <Icon className="w-4 h-4" />
                             <span>{tab.label}</span>
@@ -455,11 +459,10 @@ const VehicleManagement = () => {
                         ) : (
                           <div className="space-y-4">
                             {selectedVehicle.alerts.map((alert) => (
-                              <div key={alert.id} className={`p-4 rounded-lg border-l-4 ${
-                                alert.type === 'warning' 
-                                  ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500' 
+                              <div key={alert.id} className={`p-4 rounded-lg border-l-4 ${alert.type === 'warning'
+                                  ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500'
                                   : 'bg-blue-50 dark:bg-blue-900/20 border-blue-500'
-                              }`}>
+                                }`}>
                                 <div className="flex items-center space-x-3">
                                   {alert.type === 'warning' ? (
                                     <FiAlertTriangle className="w-5 h-5 text-orange-600" />
@@ -568,7 +571,7 @@ const VehicleManagement = () => {
                           Year *
                         </label>
                         <input
-                          {...register('year', { 
+                          {...register('year', {
                             required: 'Year is required',
                             min: { value: 1900, message: 'Invalid year' },
                             max: { value: new Date().getFullYear() + 1, message: 'Invalid year' }
@@ -624,7 +627,7 @@ const VehicleManagement = () => {
                           Current Mileage
                         </label>
                         <input
-                          {...register('mileage', { 
+                          {...register('mileage', {
                             min: { value: 0, message: 'Mileage must be positive' }
                           })}
                           type="number"

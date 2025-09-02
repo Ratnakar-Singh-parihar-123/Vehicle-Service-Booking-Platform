@@ -5,7 +5,7 @@ import {
   FiX, 
   FiSend, 
   FiPaperclip, 
-  FiSmile,
+  // FiSmile,
   FiUser,
   FiClock,
   FiCheck,
@@ -127,7 +127,7 @@ const LiveChatSupport = () => {
 
   const ChatMessage = ({ message }) => {
     const isUser = message.sender === 'user';
-    const isSupport = message.sender === 'support';
+    // const isSupport = message.sender === 'support';
 
     return (
       <motion.div

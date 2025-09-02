@@ -28,6 +28,9 @@ import {
   FiMail
 } from 'react-icons/fi';
 import { useAuth } from '../hooks/useAuth';
+// import test1 from '../assets/testimonialsUser/SarahJohnson.png';
+// import test2 from '../assets/testimonialsUser/MichaelChen.png';
+// import test3 from '../assets/testimonialsUser/';
 
 const Home = () => {
   const { user } = useAuth();
@@ -83,7 +86,7 @@ const Home = () => {
       id: 1,
       name: 'Sarah Johnson',
       role: 'Business Executive',
-      image: '/api/placeholder/80/80',
+      image: '/api/placeholder/80/8',
       rating: 5,
       text: 'Absolutely incredible service! The booking process was seamless, and my car has never run better. The technicians were professional and explained everything clearly.',
       vehicle: '2021 Tesla Model 3'

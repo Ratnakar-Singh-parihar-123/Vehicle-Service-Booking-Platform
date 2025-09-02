@@ -8,7 +8,7 @@ import {
   FiTool, 
   FiCalendar,
   FiDollarSign,
-  FiUser,
+  // FiUser,
   FiSettings,
   FiChevronRight
 } from 'react-icons/fi';

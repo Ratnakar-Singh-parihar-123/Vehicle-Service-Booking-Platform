@@ -5,7 +5,7 @@ import {
   FiArrowLeft,
   FiCalendar, 
   FiClock, 
-  FiMapPin, 
+  // FiMapPin, 
   FiUser,
   FiMail,
   FiPhone,
