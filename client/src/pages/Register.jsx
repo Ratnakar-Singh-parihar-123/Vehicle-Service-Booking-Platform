@@ -92,8 +92,8 @@ const Register = () => {
                       })}
                       type="text"
                       autoComplete="given-name"
-                      className={`input pl-10 ${errors.firstName ? 'input-error' : ''}`}
-                      placeholder="John"
+                      className={`input pl-10 ${errors.firstName ? 'input-error' : ''}text-gray-700 dark:text-gray-200`}
+                      placeholder="Enter your first name"
                     />
                   </div>
                   {errors.firstName && (
@@ -123,8 +123,8 @@ const Register = () => {
                       })}
                       type="text"
                       autoComplete="family-name"
-                      className={`input pl-10 ${errors.lastName ? 'input-error' : ''}`}
-                      placeholder="Doe"
+                      className={`input pl-10 ${errors.lastName ? 'input-error' : ''}text-gray-700 dark:text-gray-200`}
+                      placeholder="Enter your last name"
                     />
                   </div>
                   {errors.lastName && (
@@ -152,8 +152,8 @@ const Register = () => {
                     })}
                     type="email"
                     autoComplete="email"
-                    className={`input pl-10 ${errors.email ? 'input-error' : ''}`}
-                    placeholder="john@example.com"
+                    className={`input pl-10 ${errors.email ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
+                    placeholder="Enter your email address"
                   />
                 </div>
                 {errors.email && (
@@ -180,7 +180,7 @@ const Register = () => {
                     })}
                     type="tel"
                     autoComplete="tel"
-                    className={`input pl-10 ${errors.phone ? 'input-error' : ''}`}
+                    className={`input pl-10 ${errors.phone ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                     placeholder="+1234567890"
                   />
                 </div>
@@ -198,7 +198,7 @@ const Register = () => {
                   {...register('role', {
                     required: 'Please select an account type'
                   })}
-                  className={`input ${errors.role ? 'input-error' : ''}`}
+                  className={`input ${errors.role ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                   defaultValue=""
                 >
                   <option value="" disabled>Select account type</option>
@@ -233,7 +233,7 @@ const Register = () => {
                     })}
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    className={`input pl-10 pr-10 ${errors.password ? 'input-error' : ''}`}
+                    className={`input pl-10 pr-10 ${errors.password ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                     placeholder="Enter your password"
                   />
                   <button
@@ -270,7 +270,7 @@ const Register = () => {
                     })}
                     type={showConfirmPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    className={`input pl-10 pr-10 ${errors.confirmPassword ? 'input-error' : ''}`}
+                    className={`input pl-10 pr-10 ${errors.confirmPassword ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                     placeholder="Confirm your password"
                   />
                   <button
@@ -299,7 +299,7 @@ const Register = () => {
 
                 <div className="space-y-3">
                   {/* City and State */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 dark:text-gray-200">
                     <div>
                       <label htmlFor="city" className="label text-xs">
                         City
@@ -325,7 +325,7 @@ const Register = () => {
                   </div>
 
                   {/* ZIP Code and Country */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 dark:text-gray-200">
                     <div>
                       <label htmlFor="zipCode" className="label text-xs">
                         ZIP Code

@@ -1,27 +1,27 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { authService } from '../services/authService';
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+import Cookies from "js-cookie";
+import { authService } from "../services/authService";
 
 // Initial state
 const initialState = {
   user: null,
   token: null,
   loading: true,
-  error: null
+  error: null,
 };
 
 // Action types
 const AUTH_ACTIONS = {
-  LOGIN_START: 'LOGIN_START',
-  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-  LOGIN_FAILURE: 'LOGIN_FAILURE',
-  LOGOUT: 'LOGOUT',
-  REGISTER_START: 'REGISTER_START',
-  REGISTER_SUCCESS: 'REGISTER_SUCCESS',
-  REGISTER_FAILURE: 'REGISTER_FAILURE',
-  UPDATE_PROFILE: 'UPDATE_PROFILE',
-  CLEAR_ERROR: 'CLEAR_ERROR',
-  SET_LOADING: 'SET_LOADING'
+  LOGIN_START: "LOGIN_START",
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  LOGIN_FAILURE: "LOGIN_FAILURE",
+  LOGOUT: "LOGOUT",
+  REGISTER_START: "REGISTER_START",
+  REGISTER_SUCCESS: "REGISTER_SUCCESS",
+  REGISTER_FAILURE: "REGISTER_FAILURE",
+  UPDATE_PROFILE: "UPDATE_PROFILE",
+  CLEAR_ERROR: "CLEAR_ERROR",
+  SET_LOADING: "SET_LOADING",
 };
 
 // Reducer
@@ -29,11 +29,7 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case AUTH_ACTIONS.LOGIN_START:
     case AUTH_ACTIONS.REGISTER_START:
-      return {
-        ...state,
-        loading: true,
-        error: null
-      };
+      return { ...state, loading: true, error: null };
 
     case AUTH_ACTIONS.LOGIN_SUCCESS:
     case AUTH_ACTIONS.REGISTER_SUCCESS:
@@ -42,7 +38,7 @@ const authReducer = (state, action) => {
         user: action.payload.user,
         token: action.payload.token,
         loading: false,
-        error: null
+        error: null,
       };
 
     case AUTH_ACTIONS.LOGIN_FAILURE:
@@ -52,36 +48,20 @@ const authReducer = (state, action) => {
         user: null,
         token: null,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
 
     case AUTH_ACTIONS.LOGOUT:
-      return {
-        ...state,
-        user: null,
-        token: null,
-        loading: false,
-        error: null
-      };
+      return { ...state, user: null, token: null, loading: false, error: null };
 
     case AUTH_ACTIONS.UPDATE_PROFILE:
-      return {
-        ...state,
-        user: { ...state.user, ...action.payload },
-        error: null
-      };
+      return { ...state, user: { ...state.user, ...action.payload }, error: null };
 
     case AUTH_ACTIONS.CLEAR_ERROR:
-      return {
-        ...state,
-        error: null
-      };
+      return { ...state, error: null };
 
     case AUTH_ACTIONS.SET_LOADING:
-      return {
-        ...state,
-        loading: action.payload
-      };
+      return { ...state, loading: action.payload };
 
     default:
       return state;
@@ -98,38 +78,31 @@ export const AuthProvider = ({ children }) => {
   // Check for existing token on mount
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
 
       if (token) {
         try {
-          // First, try to load user data from localStorage for immediate display
-          const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+          const authData = JSON.parse(localStorage.getItem("auth") || "{}");
           if (authData.user) {
             dispatch({
               type: AUTH_ACTIONS.LOGIN_SUCCESS,
-              payload: {
-                user: authData.user,
-                token
-              }
+              payload: { user: authData.user, token },
             });
           } else {
-            // No user data found, set loading to false
             dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
           }
 
-          // Then sync with server (optional - for real apps)
+          // Optionally sync with backend:
           // const response = await authService.getProfile();
           // dispatch({
           //   type: AUTH_ACTIONS.UPDATE_PROFILE,
           //   payload: response.data.user
           // });
         } catch (error) {
-          // Token is invalid, remove it
-          Cookies.remove('token');
-          localStorage.removeItem('auth');
+          Cookies.remove("token");
+          localStorage.removeItem("auth");
           dispatch({ type: AUTH_ACTIONS.LOGOUT });
         } finally {
-          // Ensure loading is always set to false after initialization
           dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
         }
       } else {
@@ -139,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 
     initializeAuth();
 
-    // Fallback: Ensure loading is set to false after 5 seconds max
+    // Fallback: ensure loading is false after 5s
     const fallbackTimer = setTimeout(() => {
       dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
     }, 5000);
@@ -147,130 +120,94 @@ export const AuthProvider = ({ children }) => {
     return () => clearTimeout(fallbackTimer);
   }, []);
 
-  // Login function
+  // Login
   const login = async (credentials) => {
     try {
       dispatch({ type: AUTH_ACTIONS.LOGIN_START });
-      
       const response = await authService.login(credentials);
       const { user, token } = response.data;
 
-      // Store token in cookie
-      Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'strict' });
+      Cookies.set("token", token, { expires: 7, secure: true, sameSite: "strict" });
+      localStorage.setItem("auth", JSON.stringify({ user, token }));
 
-      // Store user data in localStorage
-      const authData = { user, token };
-      localStorage.setItem('auth', JSON.stringify(authData));
-
-      dispatch({
-        type: AUTH_ACTIONS.LOGIN_SUCCESS,
-        payload: { user, token }
-      });
-
+      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: { user, token } });
       return { success: true, user };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Login failed';
-      dispatch({
-        type: AUTH_ACTIONS.LOGIN_FAILURE,
-        payload: errorMessage
-      });
+      const errorMessage = error.response?.data?.message || "Login failed";
+      dispatch({ type: AUTH_ACTIONS.LOGIN_FAILURE, payload: errorMessage });
       return { success: false, error: errorMessage };
     }
   };
 
-  // Register function
+  // Register
   const register = async (userData) => {
     try {
       dispatch({ type: AUTH_ACTIONS.REGISTER_START });
-      
       const response = await authService.register(userData);
       const { user, token } = response.data;
 
-      // Store token in cookie
-      Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'strict' });
+      Cookies.set("token", token, { expires: 7, secure: true, sameSite: "strict" });
+      localStorage.setItem("auth", JSON.stringify({ user, token }));
 
-      dispatch({
-        type: AUTH_ACTIONS.REGISTER_SUCCESS,
-        payload: { user, token }
-      });
-
+      dispatch({ type: AUTH_ACTIONS.REGISTER_SUCCESS, payload: { user, token } });
       return { success: true, user };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Registration failed';
-      dispatch({
-        type: AUTH_ACTIONS.REGISTER_FAILURE,
-        payload: errorMessage
-      });
+      const errorMessage = error.response?.data?.message || "Registration failed";
+      dispatch({ type: AUTH_ACTIONS.REGISTER_FAILURE, payload: errorMessage });
       return { success: false, error: errorMessage };
     }
   };
 
-  // Logout function
+  // Logout
   const logout = async () => {
     try {
       await authService.logout();
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
-      // Remove token from cookie and clear localStorage
-      Cookies.remove('token');
-      localStorage.removeItem('auth');
+      Cookies.remove("token");
+      localStorage.removeItem("auth");
       dispatch({ type: AUTH_ACTIONS.LOGOUT });
     }
   };
 
-  // Update profile function
+  // Update profile
   const updateProfile = async (profileData) => {
     try {
       const response = await authService.updateProfile(profileData);
       const updatedUser = response.data.user;
 
-      // Update state
-      dispatch({
-        type: AUTH_ACTIONS.UPDATE_PROFILE,
-        payload: updatedUser
-      });
+      dispatch({ type: AUTH_ACTIONS.UPDATE_PROFILE, payload: updatedUser });
 
-      // Persist updated user data to localStorage
-      const existingData = JSON.parse(localStorage.getItem('auth') || '{}');
-      const updatedAuthData = {
-        ...existingData,
-        user: updatedUser
-      };
-      localStorage.setItem('auth', JSON.stringify(updatedAuthData));
+      const existingData = JSON.parse(localStorage.getItem("auth") || "{}");
+      localStorage.setItem("auth", JSON.stringify({ ...existingData, user: updatedUser }));
 
       return { success: true, user: updatedUser };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Profile update failed';
+      const errorMessage = error.response?.data?.message || "Profile update failed";
       return { success: false, error: errorMessage };
     }
   };
 
-  // Change password function
+  // Change password
   const changePassword = async (passwordData) => {
     try {
       await authService.changePassword(passwordData);
       return { success: true };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Password change failed';
+      const errorMessage = error.response?.data?.message || "Password change failed";
       return { success: false, error: errorMessage };
     }
   };
 
-  // Clear error function
+  // Clear error
   const clearError = () => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
   };
 
-  // Check if user has specific role
-  const hasRole = (role) => {
-    return state.user?.role === role;
-  };
-
-  // Check if user has any of the specified roles
-  const hasAnyRole = (roles) => {
-    return roles.includes(state.user?.role);
-  };
+  // Role checks
+  const hasRole = (role) => state.user?.role === role;
+  const hasAnyRole = (roles) => roles.includes(state.user?.role);
 
   const value = {
     ...state,
@@ -281,22 +218,16 @@ export const AuthProvider = ({ children }) => {
     changePassword,
     clearError,
     hasRole,
-    hasAnyRole
+    hasAnyRole,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Custom hook to use auth context
+// Hook
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuthContext must be used within an AuthProvider');
-  }
+  if (!context) throw new Error("useAuthContext must be used within an AuthProvider");
   return context;
 };
 

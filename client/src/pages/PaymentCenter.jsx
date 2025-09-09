@@ -562,8 +562,8 @@ const PaymentCenter = () => {
                       </label>
                       <input
                         {...register('holderName', { required: 'Cardholder name is required' })}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                        placeholder="John Doe"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
+                        placeholder="Enter your name"
                       />
                       {errors.holderName && (
                         <p className="mt-1 text-sm text-red-600">{errors.holderName.message}</p>
@@ -582,7 +582,7 @@ const PaymentCenter = () => {
                             message: 'Please enter a valid 16-digit card number'
                           }
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
                         placeholder="1234 5678 9012 3456"
                         maxLength={16}
                       />
@@ -598,7 +598,7 @@ const PaymentCenter = () => {
                         </label>
                         <select
                           {...register('expiryMonth', { required: 'Expiry month is required' })}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
                         >
                           <option value="">Month</option>
                           {Array.from({ length: 12 }, (_, i) => (
@@ -618,7 +618,7 @@ const PaymentCenter = () => {
                         </label>
                         <select
                           {...register('expiryYear', { required: 'Expiry year is required' })}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
                         >
                           <option value="">Year</option>
                           {Array.from({ length: 10 }, (_, i) => {
@@ -648,7 +648,7 @@ const PaymentCenter = () => {
                             message: 'Please enter a valid CVV'
                           }
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
                         placeholder="123"
                         maxLength={4}
                       />

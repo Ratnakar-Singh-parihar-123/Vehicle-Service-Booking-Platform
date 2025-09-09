@@ -333,7 +333,7 @@ const MyBookings = () => {
                 placeholder="Search by vehicle, service, or booking ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input pl-10 w-full"
+                className="input pl-10 w-full text-gray-700 dark:text-gray-200"
               />
             </div>
           </div>

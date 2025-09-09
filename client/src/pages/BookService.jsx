@@ -240,8 +240,8 @@ const BookService = () => {
                           }
                         })}
                         type="text"
-                        className={`input pl-10 ${errors.customerName ? 'input-error' : ''}`}
-                        placeholder="John Doe"
+                        className={`input pl-10 ${errors.customerName ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
+                        placeholder="Enter your full name"
                       />
                     </div>
                     {errors.customerName && (
@@ -267,8 +267,8 @@ const BookService = () => {
                           }
                         })}
                         type="email"
-                        className={`input pl-10 ${errors.email ? 'input-error' : ''}`}
-                        placeholder="john@example.com"
+                        className={`input pl-10 ${errors.email ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
+                        placeholder="Enter your email address"
                       />
                     </div>
                     {errors.email && (
@@ -294,7 +294,7 @@ const BookService = () => {
                           }
                         })}
                         type="tel"
-                        className={`input pl-10 ${errors.phone ? 'input-error' : ''}`}
+                        className={`input pl-10 ${errors.phone ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                         placeholder="+1234567890"
                       />
                     </div>
@@ -322,7 +322,7 @@ const BookService = () => {
                       {...register('vehicleType', {
                         required: 'Vehicle type is required'
                       })}
-                      className={`input ${errors.vehicleType ? 'input-error' : ''}`}
+                      className={`input ${errors.vehicleType ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       defaultValue=""
                     >
                       <option value="" disabled>Select vehicle type</option>
@@ -347,7 +347,7 @@ const BookService = () => {
                         required: 'Vehicle make is required'
                       })}
                       type="text"
-                      className={`input ${errors.vehicleMake ? 'input-error' : ''}`}
+                      className={`input ${errors.vehicleMake ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       placeholder="Toyota, Honda, Ford..."
                     />
                     {errors.vehicleMake && (
@@ -365,7 +365,7 @@ const BookService = () => {
                         required: 'Vehicle model is required'
                       })}
                       type="text"
-                      className={`input ${errors.vehicleModel ? 'input-error' : ''}`}
+                      className={`input ${errors.vehicleModel ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       placeholder="Camry, Civic, F-150..."
                     />
                     {errors.vehicleModel && (
@@ -391,7 +391,7 @@ const BookService = () => {
                         }
                       })}
                       type="number"
-                      className={`input ${errors.vehicleYear ? 'input-error' : ''}`}
+                      className={`input ${errors.vehicleYear ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       placeholder="2020"
                       min="1990"
                       max={new Date().getFullYear() + 1}
@@ -411,7 +411,7 @@ const BookService = () => {
                         required: 'License plate is required'
                       })}
                       type="text"
-                      className={`input ${errors.licensePlate ? 'input-error' : ''}`}
+                      className={`input ${errors.licensePlate ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       placeholder="ABC-1234"
                       style={{ textTransform: 'uppercase' }}
                     />
@@ -439,7 +439,7 @@ const BookService = () => {
                       {...register('serviceType', {
                         required: 'Service type is required'
                       })}
-                      className={`input ${errors.serviceType ? 'input-error' : ''}`}
+                      className={`input ${errors.serviceType ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       defaultValue=""
                     >
                       <option value="" disabled>Select service type</option>
@@ -463,7 +463,7 @@ const BookService = () => {
                       {...register('serviceCenterId', {
                         required: 'Service center is required'
                       })}
-                      className={`input ${errors.serviceCenterId ? 'input-error' : ''}`}
+                      className={`input ${errors.serviceCenterId ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                       defaultValue=""
                       onChange={(e) => {
                         setValue('serviceCenterId', e.target.value);
@@ -505,7 +505,7 @@ const BookService = () => {
                           required: 'Preferred date is required'
                         })}
                         type="date"
-                        className={`input pl-10 ${errors.preferredDate ? 'input-error' : ''}`}
+                        className={`input pl-10 ${errors.preferredDate ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                         min={getMinDate()}
                         max={getMaxDate()}
                         onChange={(e) => {
@@ -515,7 +515,7 @@ const BookService = () => {
                       />
                     </div>
                     {errors.preferredDate && (
-                      <p className="mt-1 text-sm text-danger-600">{errors.preferredDate.message}</p>
+                      <p className="mt-1 text-sm text-danger-600 ">{errors.preferredDate.message}</p>
                     )}
                   </div>
 
@@ -532,7 +532,7 @@ const BookService = () => {
                         {...register('preferredTime', {
                           required: 'Preferred time is required'
                         })}
-                        className={`input pl-10 ${errors.preferredTime ? 'input-error' : ''}`}
+                        className={`input pl-10 ${errors.preferredTime ? 'input-error' : ''} text-gray-700 dark:text-gray-200`}
                         defaultValue=""
                         disabled={!selectedDate || !selectedServiceCenter || loadingTimeSlots}
                       >
@@ -615,7 +615,7 @@ const BookService = () => {
                     <textarea
                       {...register('specialInstructions')}
                       rows={3}
-                      className="input"
+                      className="input text-gray-700 dark:text-gray-200"
                       placeholder="Any special instructions for the service technician..."
                     />
                   </div>

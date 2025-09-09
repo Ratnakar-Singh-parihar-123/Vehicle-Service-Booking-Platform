@@ -191,8 +191,8 @@ const Contact = () => {
                           type="text"
                           className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                             errors.firstName ? 'border-red-500' : ''
-                          }`}
-                          placeholder="John"
+                          } text-gray-700 dark:text-gray-200`}
+                          placeholder="Enter your first name"
                         />
                       </div>
                       {errors.firstName && (
@@ -219,8 +219,8 @@ const Contact = () => {
                           type="text"
                           className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                             errors.lastName ? 'border-red-500' : ''
-                          }`}
-                          placeholder="Doe"
+                          } text-gray-700 dark:text-gray-200`}
+                          placeholder="Enter your last name"
                         />
                       </div>
                       {errors.lastName && (
@@ -249,8 +249,8 @@ const Contact = () => {
                         type="email"
                         className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                           errors.email ? 'border-red-500' : ''
-                        }`}
-                        placeholder="john@example.com"
+                        } text-gray-700 dark:text-gray-200`}
+                        placeholder="Enter your email address"
                       />
                     </div>
                     {errors.email && (
@@ -277,7 +277,7 @@ const Contact = () => {
                         type="tel"
                         className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                           errors.phone ? 'border-red-500' : ''
-                        }`}
+                        } text-gray-700 dark:text-gray-200`}
                         placeholder="+1234567890"
                       />
                     </div>
@@ -297,7 +297,7 @@ const Contact = () => {
                       })}
                       className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                         errors.subject ? 'border-red-500' : ''
-                      }`}
+                      } text-gray-700 dark:text-gray-200`}
                     >
                       <option value="">Select a subject</option>
                       <option value="general">General Inquiry</option>
@@ -333,7 +333,7 @@ const Contact = () => {
                         rows={5}
                         className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                           errors.message ? 'border-red-500' : ''
-                        }`}
+                        } text-gray-700 dark:text-gray-200`}
                         placeholder="Please describe your inquiry or issue in detail..."
                       />
                     </div>

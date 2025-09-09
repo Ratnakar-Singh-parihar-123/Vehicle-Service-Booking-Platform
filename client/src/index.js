@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 
-import App from './App';
-import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
+import App from './App.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import './styles/globals.css';
 
-// Create a client
+// ✅ Create a query client with safe defaults
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -22,21 +22,19 @@ const queryClient = new QueryClient({
   },
 });
 
+// ✅ Create root
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+// ✅ Render
 root.render(
   <React.StrictMode>
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true
-          }}
-        >
+        <BrowserRouter>
           <ThemeProvider>
             <AuthProvider>
               <App />
+              {/* 🔔 Toast Notifications */}
               <Toaster
                 position="top-right"
                 toastOptions={{
@@ -63,6 +61,8 @@ root.render(
             </AuthProvider>
           </ThemeProvider>
         </BrowserRouter>
+
+        {/* ⚡ React Query Devtools (Only in Dev Mode) */}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </HelmetProvider>

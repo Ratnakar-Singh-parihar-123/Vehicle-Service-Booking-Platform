@@ -1,46 +1,47 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FiMessageCircle, 
-  FiX, 
-  FiSend, 
-  FiPaperclip, 
-  // FiSmile,
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiMessageCircle,
+  FiX,
+  FiSend,
+  FiPaperclip,
   FiUser,
   FiClock,
   FiCheck,
   FiMinimize2,
-  FiMaximize2
-} from 'react-icons/fi';
-import { formatDistanceToNow } from 'date-fns';
+  FiMaximize2,
+} from "react-icons/fi";
+import { formatDistanceToNow } from "date-fns";
 
 const LiveChatSupport = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Initialize chat with welcome message
+  // Initialize with welcome message
   useEffect(() => {
     const welcomeMessage = {
       id: 1,
       text: "Hi! I'm here to help you with any questions about our vehicle services. How can I assist you today?",
-      sender: 'support',
+      sender: "support",
       timestamp: new Date(),
-      status: 'delivered'
+      status: "delivered",
+      read: false,
     };
     setMessages([welcomeMessage]);
     setIsConnected(true);
   }, []);
 
-  // Auto-scroll to bottom when new messages arrive
+  // Auto-scroll to bottom
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // Simulate typing indicator
@@ -51,40 +52,49 @@ const LiveChatSupport = () => {
     }
   }, [isTyping]);
 
-  // Update unread count when chat is closed
+  // Handle unread count safely
   useEffect(() => {
     if (!isOpen) {
-      const supportMessages = messages.filter(m => m.sender === 'support' && !m.read);
+      const supportMessages = messages.filter(
+        (m) => m.sender === "support" && !m.read
+      );
       setUnreadCount(supportMessages.length);
     } else {
       setUnreadCount(0);
-      // Mark all messages as read
-      setMessages(prev => prev.map(msg => ({ ...msg, read: true })));
-    }
-  }, [isOpen, messages]);
 
-  const sendMessage = async () => {
+      // Only mark unread support messages as read once
+      if (messages.some((msg) => msg.sender === "support" && !msg.read)) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.sender === "support" ? { ...msg, read: true } : msg
+          )
+        );
+      }
+    }
+  }, [isOpen]); // ✅ depend only on isOpen
+
+  const sendMessage = () => {
     if (!newMessage.trim()) return;
 
     const userMessage = {
       id: Date.now(),
       text: newMessage,
-      sender: 'user',
+      sender: "user",
       timestamp: new Date(),
-      status: 'sending'
+      status: "sending",
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setNewMessage('');
+    setMessages((prev) => [...prev, userMessage]);
+    setNewMessage("");
     setIsTyping(true);
 
     // Simulate message delivery
     setTimeout(() => {
-      setMessages(prev => prev.map(msg => 
-        msg.id === userMessage.id 
-          ? { ...msg, status: 'delivered' }
-          : msg
-      ));
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === userMessage.id ? { ...msg, status: "delivered" } : msg
+        )
+      );
     }, 1000);
 
     // Simulate support response
@@ -94,24 +104,25 @@ const LiveChatSupport = () => {
         "I understand your concern. Let me check our available options for you.",
         "That's a great question! Here's what I can tell you...",
         "I'd be happy to assist you with scheduling a service appointment.",
-        "Let me connect you with one of our service specialists who can provide more detailed information."
+        "Let me connect you with one of our service specialists who can provide more detailed information.",
       ];
 
       const supportResponse = {
         id: Date.now() + 1,
         text: responses[Math.floor(Math.random() * responses.length)],
-        sender: 'support',
+        sender: "support",
         timestamp: new Date(),
-        status: 'delivered'
+        status: "delivered",
+        read: false,
       };
 
-      setMessages(prev => [...prev, supportResponse]);
+      setMessages((prev) => [...prev, supportResponse]);
       setIsTyping(false);
     }, 2000 + Math.random() * 2000);
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
@@ -122,40 +133,55 @@ const LiveChatSupport = () => {
     "Check service status",
     "Get a quote",
     "Emergency service",
-    "Contact information"
+    "Contact information",
   ];
 
   const ChatMessage = ({ message }) => {
-    const isUser = message.sender === 'user';
-    // const isSupport = message.sender === 'support';
+    const isUser = message.sender === "user";
 
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}
+        className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}
       >
-        <div className={`flex items-end space-x-2 max-w-xs lg:max-w-md ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
+        <div
+          className={`flex items-end space-x-2 max-w-xs lg:max-w-md ${
+            isUser ? "flex-row-reverse space-x-reverse" : ""
+          }`}
+        >
           {!isUser && (
             <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center flex-shrink-0">
               <FiUser className="w-4 h-4 text-primary-600 dark:text-primary-400" />
             </div>
           )}
-          <div className={`rounded-2xl px-4 py-2 ${
-            isUser 
-              ? 'bg-primary-600 text-white' 
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-          }`}>
+          <div
+            className={`rounded-2xl px-4 py-2 ${
+              isUser
+                ? "bg-primary-600 text-white"
+                : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
+            }`}
+          >
             <p className="text-sm">{message.text}</p>
-            <div className={`flex items-center justify-between mt-1 text-xs ${
-              isUser ? 'text-primary-100' : 'text-gray-500 dark:text-gray-400'
-            }`}>
-              <span>{formatDistanceToNow(message.timestamp, { addSuffix: true })}</span>
+            <div
+              className={`flex items-center justify-between mt-1 text-xs ${
+                isUser
+                  ? "text-primary-100"
+                  : "text-gray-500 dark:text-gray-400"
+              }`}
+            >
+              <span>
+                {formatDistanceToNow(message.timestamp, { addSuffix: true })}
+              </span>
               {isUser && (
                 <div className="ml-2">
-                  {message.status === 'sending' && <FiClock className="w-3 h-3" />}
-                  {message.status === 'delivered' && <FiCheck className="w-3 h-3" />}
-                  {message.status === 'read' && <FiCheck className="w-3 h-3" />}
+                  {message.status === "sending" && (
+                    <FiClock className="w-3 h-3" />
+                  )}
+                  {message.status === "delivered" && (
+                    <FiCheck className="w-3 h-3" />
+                  )}
+                  {message.status === "read" && <FiCheck className="w-3 h-3" />}
                 </div>
               )}
             </div>
@@ -178,21 +204,14 @@ const LiveChatSupport = () => {
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 rounded-2xl px-4 py-2">
           <div className="flex space-x-1">
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1, repeat: Infinity, delay: 0 }}
-              className="w-2 h-2 bg-gray-400 rounded-full"
-            />
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-              className="w-2 h-2 bg-gray-400 rounded-full"
-            />
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
-              className="w-2 h-2 bg-gray-400 rounded-full"
-            />
+            {[0, 0.2, 0.4].map((d, i) => (
+              <motion.div
+                key={i}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1, repeat: Infinity, delay: d }}
+                className="w-2 h-2 bg-gray-400 rounded-full"
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -207,7 +226,7 @@ const LiveChatSupport = () => {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-6 right-6 w-14 h-14 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-colors z-40 flex items-center justify-center ${
-          isOpen ? 'hidden' : 'flex'
+          isOpen ? "hidden" : "flex"
         }`}
       >
         <FiMessageCircle className="w-6 h-6" />
@@ -217,7 +236,7 @@ const LiveChatSupport = () => {
             animate={{ scale: 1 }}
             className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
           >
-            {unreadCount > 9 ? '9+' : unreadCount}
+            {unreadCount > 9 ? "9+" : unreadCount}
           </motion.div>
         )}
       </motion.button>
@@ -227,11 +246,11 @@ const LiveChatSupport = () => {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1, 
+            animate={{
+              opacity: 1,
+              scale: 1,
               y: 0,
-              height: isMinimized ? 60 : 500
+              height: isMinimized ? 60 : 500,
             }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
@@ -247,8 +266,12 @@ const LiveChatSupport = () => {
                   <div>
                     <h3 className="font-semibold">Support Chat</h3>
                     <div className="flex items-center space-x-1 text-xs text-white/80">
-                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-400' : 'bg-red-400'}`} />
-                      <span>{isConnected ? 'Online' : 'Offline'}</span>
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          isConnected ? "bg-green-400" : "bg-red-400"
+                        }`}
+                      />
+                      <span>{isConnected ? "Online" : "Offline"}</span>
                     </div>
                   </div>
                 </div>
@@ -257,7 +280,11 @@ const LiveChatSupport = () => {
                     onClick={() => setIsMinimized(!isMinimized)}
                     className="p-1 hover:bg-white/20 rounded transition-colors"
                   >
-                    {isMinimized ? <FiMaximize2 className="w-4 h-4" /> : <FiMinimize2 className="w-4 h-4" />}
+                    {isMinimized ? (
+                      <FiMaximize2 className="w-4 h-4" />
+                    ) : (
+                      <FiMinimize2 className="w-4 h-4" />
+                    )}
                   </button>
                   <button
                     onClick={() => setIsOpen(false)}
@@ -276,18 +303,20 @@ const LiveChatSupport = () => {
                   {messages.map((message) => (
                     <ChatMessage key={message.id} message={message} />
                   ))}
-                  
+
                   <AnimatePresence>
                     {isTyping && <TypingIndicator />}
                   </AnimatePresence>
-                  
+
                   <div ref={messagesEndRef} />
                 </div>
 
                 {/* Quick Replies */}
                 {messages.length === 1 && (
                   <div className="px-4 pb-2">
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Quick replies:</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                      Quick replies:
+                    </p>
                     <div className="flex flex-wrap gap-2">
                       {quickReplies.slice(0, 3).map((reply, index) => (
                         <button
@@ -314,7 +343,7 @@ const LiveChatSupport = () => {
                         placeholder="Type your message..."
                         className="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white resize-none"
                         rows={1}
-                        style={{ minHeight: '40px', maxHeight: '100px' }}
+                        style={{ minHeight: "40px", maxHeight: "100px" }}
                       />
                       <button className="absolute right-2 top-2 p-1 text-gray-400 hover:text-gray-600 transition-colors">
                         <FiPaperclip className="w-4 h-4" />

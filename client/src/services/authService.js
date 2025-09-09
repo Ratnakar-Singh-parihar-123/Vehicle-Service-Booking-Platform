@@ -1,4 +1,4 @@
-import { apiMethods } from './api';
+import { apiMethods } from './api.js';
 
 export const authService = {
   // Register new user

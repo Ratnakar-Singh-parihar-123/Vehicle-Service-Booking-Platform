@@ -345,8 +345,8 @@ const Profile = () => {
                                   type="text"
                                   className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                                     errors.firstName ? 'border-red-500' : ''
-                                  }`}
-                                  placeholder="John"
+                                  } text-gray-700 dark:text-gray-200`}
+                                  placeholder="Enter your first name"
                                 />
                               </div>
                             ) : (
@@ -383,8 +383,8 @@ const Profile = () => {
                                   type="text"
                                   className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                                     errors.lastName ? 'border-red-500' : ''
-                                  }`}
-                                  placeholder="Doe"
+                                  } text-gray-700 dark:text-gray-200`}
+                                  placeholder="Enter your last name"
                                 />
                               </div>
                             ) : (
@@ -437,7 +437,7 @@ const Profile = () => {
                                 type="tel"
                                 className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white ${
                                   errors.phone ? 'border-red-500' : ''
-                                }`}
+                                } text-gray-700 dark:text-gray-200`}
                                 placeholder="+1234567890"
                               />
                             </div>
@@ -475,8 +475,8 @@ const Profile = () => {
                                 <input
                                   {...register('address')}
                                   type="text"
-                                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                  placeholder="123 Main Street"
+                                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
+                                  placeholder="Enter your street address"
                                 />
                               </div>
                             ) : (
@@ -499,8 +499,8 @@ const Profile = () => {
                                 <input
                                   {...register('city')}
                                   type="text"
-                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                  placeholder="New York"
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
+                                  placeholder="Enter your city"
                                 />
                               ) : (
                                 <div className="py-2">
@@ -519,8 +519,8 @@ const Profile = () => {
                                 <input
                                   {...register('state')}
                                   type="text"
-                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                  placeholder="NY"
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
+                                  placeholder="Enter your state"
                                 />
                               ) : (
                                 <div className="py-2">
@@ -539,8 +539,8 @@ const Profile = () => {
                                 <input
                                   {...register('zipCode')}
                                   type="text"
-                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                  placeholder="10001"
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-gray-700 dark:text-gray-200"
+                                  placeholder="Enter your PIN "
                                 />
                               ) : (
                                 <div className="py-2">

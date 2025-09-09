@@ -1,7 +1,7 @@
 /* src/pages/Dashboard.jsx */
-import { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   FiCalendar,
   FiClock,
@@ -16,51 +16,51 @@ import {
   FiRefreshCw,
   FiAlertCircle,
   FiCheckCircle,
-  FiXCircle
-} from 'react-icons/fi';
-import toast from 'react-hot-toast';
+  FiXCircle,
+} from "react-icons/fi";
+import toast from "react-hot-toast";
 
-import { useAuth } from '../hooks/useAuth';
-import { dashboardService } from '../services/dashboardService';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import AnalyticsDashboard from '../components/analytics/AnalyticsDashboard';
+import { useAuth } from "../hooks/useAuth.js";
+import { dashboardService } from "../services/dashboardService.js";
+import LoadingSpinner from "../components/common/LoadingSpinner.jsx";
+import AnalyticsDashboard from "../components/analytics/AnalyticsDashboard.jsx";
 
 /* ───────────────────────────────────────────────────────────
    Helpers
 ─────────────────────────────────────────────────────────── */
 const formatDate = (iso) =>
-  new Date(iso).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'confirmed':
-    case 'completed':
-      return 'text-success-600 bg-success-100 dark:bg-success-900 dark:text-success-200';
-    case 'pending':
-      return 'text-warning-600 bg-warning-100 dark:bg-warning-900 dark:text-warning-200';
-    case 'in_progress':
-      return 'text-primary-600 bg-primary-100 dark:bg-primary-900 dark:text-primary-200';
-    case 'cancelled':
-      return 'text-danger-600 bg-danger-100 dark:bg-danger-900 dark:text-danger-200';
+    case "confirmed":
+    case "completed":
+      return "text-success-600 bg-success-100 dark:bg-success-900 dark:text-success-200";
+    case "pending":
+      return "text-warning-600 bg-warning-100 dark:bg-warning-900 dark:text-warning-200";
+    case "in_progress":
+      return "text-primary-600 bg-primary-100 dark:bg-primary-900 dark:text-primary-200";
+    case "cancelled":
+      return "text-danger-600 bg-danger-100 dark:bg-danger-900 dark:text-danger-200";
     default:
-      return 'text-gray-600 bg-gray-100 dark:bg-gray-900 dark:text-gray-200';
+      return "text-gray-600 bg-gray-100 dark:bg-gray-900 dark:text-gray-200";
   }
 };
 
 const getStatusIcon = (status) => {
   switch (status) {
-    case 'confirmed':
-    case 'completed':
+    case "confirmed":
+    case "completed":
       return FiCheckCircle;
-    case 'pending':
+    case "pending":
       return FiClock;
-    case 'cancelled':
+    case "cancelled":
       return FiXCircle;
     default:
       return FiAlertCircle;
@@ -70,76 +70,76 @@ const getStatusIcon = (status) => {
 const getQuickActionsByRole = (role) => {
   const base = [
     {
-      title: 'Book Service',
-      description: 'Schedule a new service appointment',
+      title: "Book Service",
+      description: "Schedule a new service appointment",
       icon: FiPlus,
-      link: '/book-service',
-      color: 'bg-primary-600 hover:bg-primary-700'
+      link: "/book-service",
+      color: "bg-primary-600 hover:bg-primary-700",
     },
     {
-      title: 'My Bookings',
-      description: 'View all your bookings',
+      title: "My Bookings",
+      description: "View all your bookings",
       icon: FiCalendar,
-      link: '/my-bookings',
-      color: 'bg-success-600 hover:bg-success-700'
+      link: "/my-bookings",
+      color: "bg-success-600 hover:bg-success-700",
     },
     {
-      title: 'Profile',
-      description: 'Update your profile information',
+      title: "Profile",
+      description: "Update your profile information",
       icon: FiUser,
-      link: '/profile',
-      color: 'bg-secondary-600 hover:bg-secondary-700'
-    }
+      link: "/profile",
+      color: "bg-secondary-600 hover:bg-secondary-700",
+    },
   ];
 
-  if (role === 'service_center')
+  if (role === "service_center")
     return [
       {
-        title: 'Manage Bookings',
-        description: 'View and manage customer bookings',
+        title: "Manage Bookings",
+        description: "View and manage customer bookings",
         icon: FiCalendar,
-        link: '/service-center/bookings',
-        color: 'bg-primary-600 hover:bg-primary-700'
+        link: "/service-center/bookings",
+        color: "bg-primary-600 hover:bg-primary-700",
       },
       {
-        title: 'Service Center Profile',
-        description: 'Update service center information',
+        title: "Service Center Profile",
+        description: "Update service center information",
         icon: FiSettings,
-        link: '/service-center/profile',
-        color: 'bg-success-600 hover:bg-success-700'
+        link: "/service-center/profile",
+        color: "bg-success-600 hover:bg-success-700",
       },
       {
-        title: 'Analytics',
-        description: 'View performance analytics',
+        title: "Analytics",
+        description: "View performance analytics",
         icon: FiTrendingUp,
-        link: '/service-center/analytics',
-        color: 'bg-secondary-600 hover:bg-secondary-700'
-      }
+        link: "/service-center/AnalyticsDashboard",
+        color: "bg-secondary-600 hover:bg-secondary-700",
+      },
     ];
 
-  if (role === 'admin')
+  if (role === "admin")
     return [
       {
-        title: 'Admin Panel',
-        description: 'Manage system settings',
+        title: "Admin Panel",
+        description: "Manage system settings",
         icon: FiSettings,
-        link: '/admin/dashboard',
-        color: 'bg-primary-600 hover:bg-primary-700'
+        link: "/admin/dashboard",
+        color: "bg-primary-600 hover:bg-primary-700",
       },
       {
-        title: 'User Management',
-        description: 'Manage users and service centers',
+        title: "User Management",
+        description: "Manage users and service centers",
         icon: FiUser,
-        link: '/admin/users',
-        color: 'bg-success-600 hover:bg-success-700'
+        link: "/admin/users",
+        color: "bg-success-600 hover:bg-success-700",
       },
       {
-        title: 'System Analytics',
-        description: 'View system-wide analytics',
+        title: "System Analytics",
+        description: "View system-wide analytics",
         icon: FiTrendingUp,
-        link: '/admin/analytics',
-        color: 'bg-secondary-600 hover:bg-secondary-700'
-      }
+        link: "/admin/analytics",
+        color: "bg-secondary-600 hover:bg-secondary-700",
+      },
     ];
 
   return base;
@@ -156,7 +156,7 @@ const Dashboard = () => {
     recentBookings: [],
     upcomingAppointments: [],
     stats: {},
-    quickActions: []
+    quickActions: [],
   });
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -172,26 +172,23 @@ const Dashboard = () => {
         const [recentRes, upcomingRes, statsRes] = await Promise.allSettled([
           dashboardService.getRecentBookings(5),
           dashboardService.getUpcomingAppointments(),
-          dashboardService.getUserStats()
+          dashboardService.getUserStats(),
         ]);
 
         setDashboardData({
           recentBookings:
-            recentRes.status === 'fulfilled' ? recentRes.value.data.data ?? [] : [],
+            recentRes.status === "fulfilled" ? recentRes.value.data.data ?? [] : [],
           upcomingAppointments:
-            upcomingRes.status === 'fulfilled'
-              ? upcomingRes.value.data.data ?? []
-              : [],
-          stats:
-            statsRes.status === 'fulfilled' ? statsRes.value.data.data ?? {} : {},
-          quickActions: getQuickActionsByRole(user?.role)
+            upcomingRes.status === "fulfilled" ? upcomingRes.value.data.data ?? [] : [],
+          stats: statsRes.status === "fulfilled" ? statsRes.value.data.data ?? {} : {},
+          quickActions: getQuickActionsByRole(user?.role),
         });
 
-        if (isRefresh) toast.success('Dashboard refreshed successfully');
+        if (isRefresh) toast.success("Dashboard refreshed successfully");
       } catch (err) {
-        console.error('Dashboard fetch error:', err);
-        setError('Failed to load dashboard data');
-        toast.error('Failed to load dashboard data');
+        console.error("Dashboard fetch error:", err);
+        setError("Failed to load dashboard data");
+        toast.error("Failed to load dashboard data");
       } finally {
         setLoading(false);
         setRefreshing(false);
@@ -203,17 +200,16 @@ const Dashboard = () => {
   /* ------------------------  initial load  ------------------------ */
   useEffect(() => {
     fetchDashboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchDashboardData]);
 
   /* --------------------------  actions  --------------------------- */
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success('Logged out successfully');
-      navigate('/');
+      toast.success("Logged out successfully");
+      navigate("/");
     } catch {
-      toast.error('Logout failed');
+      toast.error("Logout failed");
     }
   };
 
@@ -251,7 +247,7 @@ const Dashboard = () => {
                   Welcome back, {user?.firstName}!
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 capitalize">
-                  {user?.role?.replace('_', ' ')} dashboard
+                  {user?.role?.replace("_", " ")} dashboard
                 </p>
               </div>
             </div>
@@ -263,7 +259,7 @@ const Dashboard = () => {
                 className="btn-outline flex items-center"
               >
                 <FiRefreshCw
-                  className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`}
+                  className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
                 />
                 Refresh
               </button>
@@ -318,29 +314,29 @@ const Dashboard = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   {
-                    label: 'Total Bookings',
+                    label: "Total Bookings",
                     value: dashboardData.stats.totalBookings,
                     icon: FiCalendar,
-                    color: 'primary'
+                    color: "primary",
                   },
                   {
-                    label: 'Completed',
+                    label: "Completed",
                     value: dashboardData.stats.completedBookings,
                     icon: FiCheckCircle,
-                    color: 'success'
+                    color: "success",
                   },
                   {
-                    label: 'Pending',
+                    label: "Pending",
                     value: dashboardData.stats.pendingBookings,
                     icon: FiClock,
-                    color: 'warning'
+                    color: "warning",
                   },
                   {
-                    label: 'This Month',
+                    label: "This Month",
                     value: dashboardData.stats.monthlyBookings,
                     icon: FiTrendingUp,
-                    color: 'secondary'
-                  }
+                    color: "secondary",
+                  },
                 ].map(({ label, value = 0, icon: Icon, color }) => (
                   <div key={label} className="card p-6 flex items-center">
                     <div
@@ -396,10 +392,10 @@ const Dashboard = () => {
                             </div>
                             <div>
                               <p className="font-medium text-gray-900 dark:text-white">
-                                {b.services?.[0]?.service?.name || 'Service Booking'}
+                                {b.services?.[0]?.service?.name || "Service Booking"}
                               </p>
                               <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {b.serviceCenter?.name || 'Service Center'}
+                                {b.serviceCenter?.name || "Service Center"}
                               </p>
                               <p className="text-xs text-gray-500">
                                 {formatDate(b.scheduledDateTime ?? b.createdAt)}
@@ -442,7 +438,6 @@ const Dashboard = () => {
                   </h3>
                 </header>
                 <div className="card-body space-y-4">
-                  {/* name */}
                   <div className="flex items-center space-x-3">
                     <FiUser className="w-5 h-5 text-gray-400" />
                     <div>
@@ -450,23 +445,24 @@ const Dashboard = () => {
                         {user?.firstName} {user?.lastName}
                       </p>
                       <p className="text-xs text-gray-600 dark:text-gray-400 capitalize">
-                        {user?.role?.replace('_', ' ')}
+                        {user?.role?.replace("_", " ")}
                       </p>
                     </div>
                   </div>
-                  {/* email */}
                   <div className="flex items-center space-x-3">
                     <FiMail className="w-5 h-5 text-gray-400" />
-                    <p className="text-sm text-gray-900 dark:text-white">{user?.email}</p>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {user?.email}
+                    </p>
                   </div>
-                  {/* phone */}
                   {user?.phone && (
                     <div className="flex items-center space-x-3">
                       <FiPhone className="w-5 h-5 text-gray-400" />
-                      <p className="text-sm text-gray-900 dark:text-white">{user.phone}</p>
+                      <p className="text-sm text-gray-900 dark:text-white">
+                        {user.phone}
+                      </p>
                     </div>
                   )}
-                  {/* location */}
                   {user?.address?.city && (
                     <div className="flex items-center space-x-3">
                       <FiMapPin className="w-5 h-5 text-gray-400" />
@@ -475,8 +471,10 @@ const Dashboard = () => {
                       </p>
                     </div>
                   )}
-
-                  <Link to="/profile" className="btn-outline w-full flex justify-center mt-6">
+                  <Link
+                    to="/profile"
+                    className="btn-outline w-full flex justify-center mt-6"
+                  >
                     <FiSettings className="w-4 h-4 mr-2" />
                     Edit Profile
                   </Link>
@@ -503,7 +501,7 @@ const Dashboard = () => {
                           </div>
                           <div className="flex-1">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
-                              {a.services?.[0]?.service?.name || 'Service'}
+                              {a.services?.[0]?.service?.name || "Service"}
                             </p>
                             <p className="text-xs text-gray-600 dark:text-gray-400">
                               {formatDate(a.scheduledDateTime)}
@@ -526,7 +524,7 @@ const Dashboard = () => {
           </div>
 
           {/* Analytics */}
-          {(user?.role === 'service_center' || user?.role === 'admin') && (
+          {(user?.role === "service_center" || user?.role === "admin") && (
             <section className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
                 Business Analytics
