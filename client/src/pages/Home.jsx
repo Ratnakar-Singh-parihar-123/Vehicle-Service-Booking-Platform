@@ -28,6 +28,9 @@ import {
   FiMail
 } from 'react-icons/fi';
 import { useAuth } from '../hooks/useAuth';
+import test1 from '../assets/testimonialsUser/EmilyRodriguez.png';
+import test2 from '../assets/testimonialsUser/MichaelChen.png';
+import test3 from '../assets/testimonialsUser/SarahJohnson.png';
 
 const Home = () => {
   const { user } = useAuth();
@@ -83,28 +86,28 @@ const Home = () => {
       id: 1,
       name: 'Sarah Johnson',
       role: 'Business Executive',
-      image: '/api/placeholder/80/80',
+      image: test3,
       rating: 5,
       text: 'Absolutely incredible service! The booking process was seamless, and my car has never run better. The technicians were professional and explained everything clearly.',
-      vehicle: '2021 Tesla Model 3'
+      vehicle: '2023 Tesla Model 3'
     },
     {
       id: 2,
       name: 'Michael Chen',
       role: 'Software Engineer',
-      image: '/api/placeholder/80/80',
+      image: test2,
       rating: 5,
       text: 'The digital experience is outstanding. Real-time updates, transparent pricing, and exceptional quality. This is the future of vehicle maintenance!',
-      vehicle: '2020 BMW X5'
+      vehicle: '2024 BMW X5'
     },
     {
       id: 3,
       name: 'Emily Rodriguez',
       role: 'Marketing Director',
-      image: '/api/placeholder/80/80',
+      image: test1,
       rating: 5,
       text: 'I love how convenient everything is. From booking to payment, everything is handled digitally. The service quality exceeded my expectations completely.',
-      vehicle: '2022 Audi A4'
+      vehicle: '2025 Audi A4'
     }
   ];
 

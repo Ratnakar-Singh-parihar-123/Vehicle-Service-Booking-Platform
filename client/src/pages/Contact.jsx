@@ -46,7 +46,7 @@ const Contact = () => {
       icon: FiMapPin,
       title: 'Visit Us',
       primary: '123 Service Street',
-      secondary: 'New York, NY 10001',
+      secondary: 'New Delhi, NY 10001',
       description: 'Visit our headquarters for in-person assistance',
       color: 'text-secondary-600'
     },
