@@ -12,9 +12,11 @@ const bookingRoutes = require('./routes/bookings');
 const serviceRoutes = require('./routes/services');
 const serviceCenterRoutes = require('./routes/serviceCenters');
 const adminRoutes = require('./routes/admin');
+const path = require('path');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
+const _dirname = path.resolve();
 
 const app = express();
 
@@ -71,6 +73,11 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/service-centers', serviceCenterRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use(express.static(path.join(_dirname, '/client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(_dirname, 'client', 'build' , 'index.html'));
+});
 
 // Handle undefined routes
 app.all('*', (req, res) => {
