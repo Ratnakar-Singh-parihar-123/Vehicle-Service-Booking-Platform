@@ -23,7 +23,7 @@ app.use(helmet());
 /* ────────────────────────────────  CORS  ─────────────────────────────── */
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: process.env.CLIENT_URL | 'https://vehicle-service-booking-platform.onrender.com',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
