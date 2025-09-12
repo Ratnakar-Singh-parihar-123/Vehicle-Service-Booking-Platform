@@ -21,9 +21,20 @@ const app = express();
 app.use(helmet());
 
 /* ────────────────────────────────  CORS  ─────────────────────────────── */
+const allowedOrigins = [
+  process.env.CLIENT_URL, // production (Render)
+  'http://localhost:3000', // local development
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL | 'https://vehicle-service-booking-platform.onrender.com',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
