@@ -23,6 +23,7 @@
     "build": "^0.1.4",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
+    "dist": "^0.1.2",
     "framer-motion": "^12.23.12",
     "js-cookie": "^3.0.5",
     "postcss": "^8.5.6",

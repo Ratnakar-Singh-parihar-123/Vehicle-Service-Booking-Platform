@@ -11,6 +11,7 @@ const bookingRoutes     = require('./routes/bookings');
 const serviceRoutes     = require('./routes/services');
 const serviceCenterRoutes = require('./routes/serviceCenters');
 const adminRoutes       = require('./routes/admin');
+const path              = require('path');
 
 const errorHandler      = require('./middleware/errorHandler');
 
@@ -73,6 +74,15 @@ app.all('/api/*', (req, res) =>
     message: `API route ${req.originalUrl} not found`,
   })
 );
+
+/* ───────────────────────────── STATIC FILES ──────────────────────────── */
+// React/Frontend build serve karna
+const __dirnamePath = path.resolve();
+app.use(express.static(path.join(__dirnamePath, 'client', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirnamePath, 'client', 'build', 'index.html'));
+});
 
 /* ───────────────────────────── GLOBAL ERRORS ─────────────────────────── */
 app.use(errorHandler);
