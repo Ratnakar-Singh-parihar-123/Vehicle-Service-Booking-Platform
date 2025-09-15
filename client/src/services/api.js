@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "https://vehicle-service-booking-platform.onrender.com/api",
+  baseURL: process.env.REACT_APP_API_URL || "localhost:3000",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
