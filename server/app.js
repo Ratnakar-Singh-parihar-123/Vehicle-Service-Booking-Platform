@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 const path = require('path');
 
+// Routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const bookingRoutes = require('./routes/bookings');
@@ -21,14 +22,14 @@ app.use(helmet());
 
 /* ────────────────────────────────  CORS  ──────────────────────────────── */
 const allowedOrigins = [
-  process.env.CLIENT_URL,    // Production frontend (Render / Vercel)
-  'http://localhost:3000',   // Local development
+  process.env.CLIENT_URL,   // Production frontend (Render/Vercel/Netlify)
+  'http://localhost:3000',  // Local React frontend
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, Postman)
+      // Allow requests with no origin (like mobile apps, Postman, curl)
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -46,7 +47,7 @@ app.use(
 
 /* ────────────────────────────── RATE LIMITING ─────────────────────────── */
 const limiter = rateLimit({
-  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 min
+  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
   max: Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
   message: { success: false, message: 'Too many requests, try again later.' },
   standardHeaders: true,
@@ -65,9 +66,9 @@ app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 app.get('/api/health', (_req, res) =>
   res.status(200).json({
     success: true,
-    message: 'Server is running',
+    message: '✅ Server is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV,
+    environment: process.env.NODE_ENV || 'development',
   })
 );
 
@@ -88,9 +89,11 @@ app.all('/api/*', (req, res) =>
 );
 
 /* ───────────────────────────── STATIC FILES ──────────────────────────── */
-// React/Frontend build serve karna (monorepo deploy on Render)
+// React frontend build serve karna (monorepo style Render deploy)
 const __dirnamePath = path.resolve();
 app.use(express.static(path.join(__dirnamePath, 'client', 'build')));
+
+// Catch-all for React Router
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirnamePath, 'client', 'build', 'index.html'));
 });
