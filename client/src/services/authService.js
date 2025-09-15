@@ -50,31 +50,31 @@ export const authService = {
 
   // Change password
   changePassword: (passwordData) => {
-    return apiMethods.put('api/auth/change-password', passwordData);
+    return apiMethods.put('/api/auth/change-password', passwordData);
   },
 
   // Request password reset
   requestPasswordReset: (email) => {
-    return apiMethods.post('api/auth/forgot-password', { email });
+    return apiMethods.post('/api/auth/forgot-password', { email });
   },
 
   // Reset password
   resetPassword: (token, newPassword) => {
-    return apiMethods.post('api/auth/reset-password', { token, password: newPassword });
+    return apiMethods.post('/api/auth/reset-password', { token, password: newPassword });
   },
 
   // Validate reset token
   validateResetToken: (token, email) => {
-    return apiMethods.post('api/auth/validate-reset-token', { token, email });
+    return apiMethods.post('/api/auth/validate-reset-token', { token, email });
   },
 
   // Verify email
   verifyEmail: (token) => {
-    return apiMethods.post('api/auth/verify-email', { token });
+    return apiMethods.post('/api/auth/verify-email', { token });
   },
 
   // Resend verification email
   resendVerification: () => {
-    return apiMethods.post('api/auth/resend-verification');
+    return apiMethods.post('/api/auth/resend-verification');
   }
 };
