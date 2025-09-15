@@ -1,38 +1,41 @@
-const express           = require('express');
-const cors              = require('cors');
-const helmet            = require('helmet');
-const morgan            = require('morgan');
-const rateLimit         = require('express-rate-limit');
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+const path = require('path');
 
-const authRoutes        = require('./routes/auth');
-const userRoutes        = require('./routes/users');
-const bookingRoutes     = require('./routes/bookings');
-const serviceRoutes     = require('./routes/services');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const bookingRoutes = require('./routes/bookings');
+const serviceRoutes = require('./routes/services');
 const serviceCenterRoutes = require('./routes/serviceCenters');
-const adminRoutes       = require('./routes/admin');
-const path              = require('path');
-
-const errorHandler      = require('./middleware/errorHandler');
+const adminRoutes = require('./routes/admin');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
 /* ─────────────────────────────── SECURITY ─────────────────────────────── */
 app.use(helmet());
 
-/* ────────────────────────────────  CORS  ─────────────────────────────── */
+/* ────────────────────────────────  CORS  ──────────────────────────────── */
 const allowedOrigins = [
-  process.env.CLIENT_URL, // production (Render)
-  'http://localhost:3000', // local development
+  process.env.CLIENT_URL,    // Production frontend (Render / Vercel)
+  'http://localhost:3000',   // Local development
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
+      // Allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        console.warn(`❌ CORS blocked request from: ${origin}`);
+        return callback(new Error('Not allowed by CORS'));
       }
     },
     credentials: true,
@@ -56,9 +59,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 /* ──────────────────────────────── LOGGING ────────────────────────────── */
-app.use(
-  morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined')
-);
+app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 
 /* ───────────────────────────── HEALTH CHECK ──────────────────────────── */
 app.get('/api/health', (_req, res) =>
@@ -87,10 +88,9 @@ app.all('/api/*', (req, res) =>
 );
 
 /* ───────────────────────────── STATIC FILES ──────────────────────────── */
-// React/Frontend build serve karna
+// React/Frontend build serve karna (monorepo deploy on Render)
 const __dirnamePath = path.resolve();
 app.use(express.static(path.join(__dirnamePath, 'client', 'build')));
-
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirnamePath, 'client', 'build', 'index.html'));
 });
